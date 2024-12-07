@@ -1,12 +1,11 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from "./CommonComponents/header/header.component";
-import { MainComponentComponent } from "./ChatAppComponents/main-component/main-component.component";
+import { MainComponent } from "./ChatAppComponents/main/main.component";
 import { FooterComponent } from "./CommonComponents/footer/footer.component";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, HeaderComponent, MainComponentComponent, FooterComponent],
+  imports: [HeaderComponent, MainComponent, FooterComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
