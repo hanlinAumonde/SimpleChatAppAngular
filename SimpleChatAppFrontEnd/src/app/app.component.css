@@ -1,0 +1,20 @@
+.appContainer {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    padding: 0;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.header {
+    height:90px;
+}
+
+.mainComponent {
+    flex: 1;
+}
+
+.footer {
+    height:80px;
+}
