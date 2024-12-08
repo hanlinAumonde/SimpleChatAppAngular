@@ -1,5 +1,7 @@
 <div class="appContainer">
   <Header class="header"></Header>
-  <MainComponent class="mainComponent"></MainComponent>
+  @if(userInfo$ | async; as user){
+    <MainComponent class="mainComponent" [userInfo]="user"></MainComponent>
+  }
   <Footer class="footer"></Footer>
 </div>
