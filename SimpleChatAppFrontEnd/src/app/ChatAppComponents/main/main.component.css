@@ -1,18 +1,6 @@
-.container-fluid {
-    flex: 1;
-    padding: 2%;
-    display: flex;
-    flex-direction: column;
-}
-
 .row {
     flex: 1;
     padding : 1%;
-}
-
-.col-md-9 {
-    display: flex;
-    flex-direction: column;
 }
 
 .mainPages {
@@ -20,5 +8,6 @@
     background-color: white;
     border: 2px solid #ccc;
     padding: 10px;
+    margin-left: 1%;
     box-shadow: 0 4px 6px #39373D;
 }

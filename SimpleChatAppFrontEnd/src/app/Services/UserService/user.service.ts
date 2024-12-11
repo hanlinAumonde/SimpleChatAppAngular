@@ -2,7 +2,7 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { Injectable } from '@angular/core';
 import { catchError, finalize, map, Observable, of, tap, throwError } from 'rxjs';
 import { UserModel } from '../../Models/UserModel';
-import properties from '../properties.json';
+import properties from '../../properties.json';
 
 @Injectable({
   providedIn: 'root'
@@ -25,6 +25,9 @@ export class UserService {
     })
     .pipe(catchError(this.handleGetLoggedUserError));
   }
+
+  /* checkLogin() : Observable<boolean>{
+    return this.httpClient.get    */ 
 
   private handleGetLoggedUserError(error: HttpErrorResponse){
     let errorMessage:string = '';

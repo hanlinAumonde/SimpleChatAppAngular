@@ -1,0 +1,6 @@
+[
+    {"id":0, "path":"/acceuilPage", "titre":"Acceuil"},
+    {"id":1, "path":"/planifier-a-chatroom", "titre":"Planifier un Chatroom"},
+    {"id":2, "path":"/chatroomlist-owned", "titre":"Votre Chatrooms"},
+    {"id":3, "path":"/chatroomlist-joined", "titre":"Chatrooms Rejointes"}
+]

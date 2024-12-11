@@ -31,26 +31,12 @@
         <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse">
             <div class="accordion-body">
                 <ul class="list-group list-group-flush nav">
-                    <li class="list-group-item nav-item">
-                        <a class="nav-link fs-5" routerLink="/acceuilPage" routerLinkActive="active" ariaCurrentWhenActive="page">
-                            <strong>Accueil</strong>
-                        </a>
-                    </li>
-                    <li class="list-group-item nav-item">
-                        <a class="nav-link fs-5" routerLink="/planifier-a-chatroom" routerLinkActive="active" ariaCurrentWhenActive="page">
-                            <strong>Planifier un Chatroom</strong>
-                        </a>
-                    </li>
-                    <li class="list-group-item nav-item">
-                        <a class="nav-link fs-5" routerLink="/chatroomlist-owned" routerLinkActive="active" ariaCurrentWhenActive="page">
-                            <strong>Votre Chatrooms</strong>
-                        </a>
-                    </li>
-                    <li class="list-group-item nav-item">
-                        <a class="nav-link fs-5" routerLink="/chatroomlist-joined" routerLinkActive="active" ariaCurrentWhenActive="page">
-                            <strong>Chatrooms Rejointes</strong>
-                        </a>
-                    </li>
+                    @for(routerLink of routerLinkList; track routerLink.id){
+                        <li class="list-group-item nav-item">
+                            <a class="nav-link fs-5" [routerLink]="routerLink.path" (click)="onClickLink()">
+                                <strong>{{routerLink.titre}}</strong>
+                            </a>
+                    }
                 </ul>
             </div>
         </div>

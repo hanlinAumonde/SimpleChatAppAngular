@@ -1,1 +1,30 @@
-<p>acceuil works!</p>
+@if(userInfo$ | async; as loggedUser){
+    <div class="accueil">
+        <h1>Welcome {{loggedUser.firstName}} {{loggedUser.lastName}}</h1>
+        <section class="section">
+            <h2>Voici votre Chatrooms :</h2>
+                <div>
+                    Vous pouvez voir vos Chatrooms dans 
+                    <a [routerLink]="routerLinkList[2].path">Chatrooms Owned</a> 
+                    et faire les operations.
+                </div>
+                <div>
+                    S'il ya des chatrooms que vous avez planifié n'ont pas etre affiché, 
+                    c'est possible que ils ont deja expiré.
+                </div>
+        </section>
+        <br/>
+        <section class="section">
+            <h2>Voici les Chatrooms que vous avez rejoint :</h2>
+                <div>
+                    Vous pouvez voir les Chatrooms que vous avez rejoint dans 
+                    <a [routerLink]="routerLinkList[3].path">Chatrooms joined</a> 
+                    et faire les operations.
+                </div>
+                <div>
+                    S'il ya des chatrooms que vous avez rejoint n'ont pas etre affiché, 
+                    c'est possible que ils ont deja expiré.
+                </div>
+        </section>
+    </div>
+}

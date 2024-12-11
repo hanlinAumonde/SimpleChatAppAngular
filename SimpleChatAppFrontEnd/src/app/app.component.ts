@@ -4,8 +4,8 @@ import { MainComponent } from "./ChatAppComponents/main/main.component";
 import { FooterComponent } from "./CommonComponents/footer/footer.component";
 import { UserModel } from './Models/UserModel';
 import { Observable } from 'rxjs';
-import { UserService } from './Services/UserService/user.service';
 import { AsyncPipe } from '@angular/common';
+import { CheckLoginService } from './Services/CheckLogin/check-login.service';
 
 @Component({
   selector: 'app-root',
@@ -16,9 +16,9 @@ import { AsyncPipe } from '@angular/common';
 export class AppComponent implements OnInit{
   userInfo$!: Observable<UserModel>;
 
-  constructor(private userService: UserService) {}
+  constructor(private checkLoginService : CheckLoginService) {}
 
   ngOnInit(): void {
-    this.userInfo$ = this.userService.getLoggedUser();
+    this.userInfo$ = this.checkLoginService.checkLoginEvents$;
   }
 }
