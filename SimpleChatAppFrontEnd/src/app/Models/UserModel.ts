@@ -1,3 +1,6 @@
-export class UserModel {
-    constructor(public userId:number, public firstName: string, public lastName:string, public mail:string){}
+export interface UserModel {
+    id: number;
+    firstName: string;
+    lastName: string;
+    mail: string;
 }

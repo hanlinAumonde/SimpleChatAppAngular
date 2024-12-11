@@ -1,0 +1,17 @@
+<ul class="pagination">
+    <li class="page-item">
+        <a class="page-link" href="#" [class.disabled]="currentPage === 0"
+            aria-label="Previous" (click)="onPageChange(currentPage-1)">
+            <span aria-hidden="true">&laquo;</span>
+        </a>
+    </li>
+    <li class="page-item">
+        <strong class="page-link">Page {{currentPage + 1}} of {{totalPages}}</strong>
+    </li>
+    <li class="page-item">
+        <a class="page-link" href="#" [class.disabled]="currentPage+1 === totalPages"
+            aria-label="Next" (click)="onPageChange(currentPage+1)">
+            <span aria-hidden="true">&raquo;</span>
+        </a>
+    </li>
+</ul>

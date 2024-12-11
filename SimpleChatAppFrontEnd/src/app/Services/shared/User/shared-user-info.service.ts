@@ -7,7 +7,7 @@ import { UserModel } from '../../../Models/UserModel';
 })
 export class SharedUserInfoService {
 
-  private user = new BehaviorSubject<UserModel>(new UserModel(0, '', '', ''));
+  private user = new BehaviorSubject<UserModel>({} as UserModel);
   
   currentUserInfo$ = this.user.asObservable();
 

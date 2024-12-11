@@ -12,6 +12,7 @@
                     S'il ya des chatrooms que vous avez planifié n'ont pas etre affiché, 
                     c'est possible que ils ont deja expiré.
                 </div>
+                <ChatroomList [userId]="loggedUser.id" [isOwner]="true"></ChatroomList>
         </section>
         <br/>
         <section class="section">
@@ -25,6 +26,7 @@
                     S'il ya des chatrooms que vous avez rejoint n'ont pas etre affiché, 
                     c'est possible que ils ont deja expiré.
                 </div>
+                <ChatroomList [userId]="loggedUser.id" [isOwner]="false"></ChatroomList>
         </section>
     </div>
 }

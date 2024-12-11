@@ -22,23 +22,6 @@ export class UserService {
   getLoggedUser() : Observable<UserModel>{
     return this.httpClient.get<UserModel>(properties.LoggedUserApi,{
       withCredentials: true
-    })
-    .pipe(catchError(this.handleGetLoggedUserError));
-  }
-
-  /* checkLogin() : Observable<boolean>{
-    return this.httpClient.get    */ 
-
-  private handleGetLoggedUserError(error: HttpErrorResponse){
-    let errorMessage:string = '';
-    if(error.status === 401){
-      errorMessage = 'Error: Unauthorized';
-    }else if(error.status === 0){
-      errorMessage = 'Error: Cannot connect to the server';
-    }
-    return throwError(() => {
-      alert(errorMessage);
-      window.location.href = properties.LoginApi;
     });
   }
 
