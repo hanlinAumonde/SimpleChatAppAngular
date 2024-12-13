@@ -1,0 +1,37 @@
+@if(otherUsers$ | async; as page){            
+    <div class="accordion" id="userAccordion">
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="true" aria-controls="panelsStayOpen-collapseThree">
+                    User List
+                </button>
+            </h2>
+            <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse show">
+                <div class="accordion-body">  
+                    @for(user of page.content; track user.id){
+                        <div class="form-check row">
+                            <label class="form-check-label">
+                                <input 
+                                    class="form-check-input checkbox col"
+                                    type="checkbox"
+                                    [checked]="userIsInvited(user.id)"
+                                    (click)="toggleUserInvitation($event,user)"
+                                >
+                                <strong class="col">{{user.firstName}} {{user.lastName}}</strong>
+                            </label>
+                        </div>
+                    }
+                    <Pagination [currentPage]="page.number"
+                                [totalPages]="page.totalPages"
+                                (pageChanged)="onPageChange($event)"
+                    ></Pagination>
+                </div>
+            </div>
+        </div>
+    </div>
+    @if(usersInvited.length === 0 && checkboxChanged){
+        <div class="alert alert-danger">
+            Vous devez inviter au moins un utilisateur
+        </div>
+    }
+}

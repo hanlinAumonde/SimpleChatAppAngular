@@ -1,16 +1,26 @@
 <ul class="pagination">
     <li class="page-item">
-        <a class="page-link" href="#" [class.disabled]="currentPage === 0"
-            aria-label="Previous" (click)="onPageChange(currentPage-1)">
+        <a class="page-link" [class.disabled]="currentPage === 0" href="#"
+            aria-label="Previous" (click)="handlePageChange($event, currentPage-1)">
             <span aria-hidden="true">&laquo;</span>
         </a>
     </li>
+    @for(pageNumber of rangeOfPages(); track pageNumber){
+        @if(currentPage === pageNumber-1){
+            <li class="page-item active" aria-current="page">
+                <span class="page-link">{{pageNumber}}</span>
+            </li>
+        }@else{
+            <li class="page-item">
+                <a class="page-link" href="#" (click)="handlePageChange($event, pageNumber-1)">
+                    {{pageNumber}}
+                </a>
+            </li>
+        }
+    }
     <li class="page-item">
-        <strong class="page-link">Page {{currentPage + 1}} of {{totalPages}}</strong>
-    </li>
-    <li class="page-item">
-        <a class="page-link" href="#" [class.disabled]="currentPage+1 === totalPages"
-            aria-label="Next" (click)="onPageChange(currentPage+1)">
+        <a class="page-link" [class.disabled]="currentPage+1 === totalPages" href="#"
+            aria-label="Next" (click)="handlePageChange($event, currentPage+1)">
             <span aria-hidden="true">&raquo;</span>
         </a>
     </li>

@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { catchError, finalize, map, Observable, of, tap, throwError } from 'rxjs';
 import { UserModel } from '../../Models/UserModel';
 import properties from '../../properties.json';
+import { Page } from '../../Models/PageableModel';
 
 @Injectable({
   providedIn: 'root'
@@ -21,6 +22,12 @@ export class UserService {
 
   getLoggedUser() : Observable<UserModel>{
     return this.httpClient.get<UserModel>(properties.LoggedUserApi,{
+      withCredentials: true
+    });
+  }
+
+  getOtherUsers(page:number) : Observable<Page<UserModel>>{
+    return this.httpClient.get<Page<UserModel>>(properties.getAllOtherUsersApi + '?page=' + page,{
       withCredentials: true
     });
   }

@@ -19,9 +19,7 @@ export class AcceuilComponent implements OnInit{
 
   userInfo$!: Observable<UserModel>;
 
-  constructor(private sharedUserInfoService: SharedUserInfoService,
-              private chatroomService: ChatroomService
-  ){}
+  constructor(private sharedUserInfoService: SharedUserInfoService){}
 
   ngOnInit(): void {
     this.userInfo$ = this.sharedUserInfoService.currentUserInfo$;

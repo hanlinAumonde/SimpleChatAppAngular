@@ -4,6 +4,7 @@ import { Page } from '../../Models/PageableModel';
 import { ChatroomModel } from '../../Models/ChatroomModel';
 import properties from '../../properties.json';
 import { Observable } from 'rxjs';
+import { NewChatroomModel } from '../../Models/NewChatroomModel';
 
 @Injectable({
   providedIn: 'root'
@@ -19,5 +20,12 @@ export class ChatroomService {
     );
   }
 
+  addChatroom(chatroom: NewChatroomModel): Observable<ChatroomModel>{
+    return this.httpClient.post<ChatroomModel>(
+      properties.ChatroomApi,
+      chatroom,
+      {withCredentials: true}
+    );
+  }
   
 }

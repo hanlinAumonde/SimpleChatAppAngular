@@ -7,17 +7,19 @@
         </h2>
         <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show">
             <div class="accordion-body">
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item">
-                        Email Address : <strong>{{userInfo.mail}}</strong>
-                    </li>
-                    <li class="list-group-item">
-                        First Name : <strong>{{userInfo.firstName}}</strong>
-                    </li>
-                    <li class="list-group-item">
-                        Last Name : <strong>{{userInfo.lastName}}</strong>
-                    </li>
-                </ul>
+                @if(userInfo$ | async; as userInfo){
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            Email Address : <strong>{{userInfo.mail}}</strong>
+                        </li>
+                        <li class="list-group-item">
+                            First Name : <strong>{{userInfo.firstName}}</strong>
+                        </li>
+                        <li class="list-group-item">
+                            Last Name : <strong>{{userInfo.lastName}}</strong>
+                        </li>
+                    </ul>
+                }
                 <button type="button" class="btn btn-outline-danger" (click)="onClickLogout()">Deconnexion</button>
             </div>
         </div>

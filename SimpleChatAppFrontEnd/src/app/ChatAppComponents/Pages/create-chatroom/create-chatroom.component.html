@@ -1,1 +1,87 @@
-<p>create-chatroom works!</p>
+<div class="createPage">    
+    <h1>Planifier votre chatroom :</h1>
+    <form [formGroup]="createChatroomForm" class="createChatroomForm" (ngSubmit)="onSubmit()" #formDir="ngForm">
+        <div [hidden]="formDir.submitted">
+        <div class="mb-3">
+            <label for="titre" class="form-label str">Titre de la chatroom :</label>
+            <input class="form-control" type="text" id="titre" formControlName="titre"
+                   placeholder="Entrer le titre du Chatroom">
+            @if(titre?.invalid && (titre?.dirty || titre?.touched)){
+                <div class="alert alert-danger">
+                    @if(titre?.hasError('required')){
+                        Titre est requis
+                    }
+                    @if(titre?.hasError('maxlength')){
+                        Titre doit contenir au plus 20 caracteres
+                    }
+                    @if(titre?.hasError('specialChars')){
+                        Titre ne doit pas contenir de caracteres speciaux
+                    }
+                    </div>
+            }
+        </div>
+        <div class="mb-3">
+            <label for="description" class="form-label">Description de la chatroom :</label>
+            <textarea class="form-control" id="description" formControlName="description"
+                      placeholder="Entrer la description du Chatroom"></textarea>
+            @if(description?.invalid && (description?.dirty || description?.touched)){
+                <div class="alert alert-danger">
+                    @if(description?.hasError('required')){
+                        Description est requise
+                    }
+                    @if(description?.hasError('maxlength')){
+                        Description doit contenir au plus 100 caracteres
+                    }
+                    @if(description?.hasError('specialChars')){
+                        Description ne doit pas contenir de caracteres speciaux
+                    }
+                    </div>
+            }
+        </div>
+        <div class="mb-3">
+            <label for="other-users" class="form-label">Invitez les utilisateurs :</label>
+            <InviteUsers id="other-users" (usersInvitedChanged)="updateUsersList($event)"></InviteUsers>
+        </div>
+        <div class="mb-3">
+            <label for="dateStart" class="form-label">Choisir l'horaire/Depart :</label>
+            <input class="form-control" type="datetime-local" id="dateStart" 
+                   formControlName="dateStart" [min]="getDateISOStr()">
+            @if(dateStart?.invalid && (dateStart?.dirty || dateStart?.touched)){
+                <div class="alert alert-danger">
+                    @if(dateStart?.hasError('required')){
+                        Description est requise
+                    }
+                    @if(dateStart?.hasError('invalidDateFormat')){
+                        Format de date invalide
+                    }
+                </div>
+            }
+        </div>
+        <div class="mb-3">
+            <label for="duration" class="form-label">Duree de la chatroom (en jour) :</label>
+            <input class="form-control" type="number" id="duration" formControlName="duration">
+            <div class="text text-muted">Entre 1 -30 jours</div>
+            @if(duration?.invalid && (duration?.dirty || duration?.touched)){
+                <div class="alert alert-danger">
+                    @if(duration?.hasError('required')){
+                        Duree est requise
+                    }
+                    @if(duration?.hasError('min')){
+                        Duree doit etre au moins 1
+                    }
+                    @if(duration?.hasError('max')){
+                        Duree doit etre au plus 30
+                    }
+                </div>
+            }
+        </div>
+        <button class="btn btn-primary" type="submit" [disabled]="createChatroomForm.invalid">Creer votre Chatroom</button>
+        </div>
+    </form>
+    @if(formDir.submitted){
+        <div class="alert alert-success">
+            Chatroom cree avec succes
+        </div>
+        <button class="btn btn-primary" (click)="resetForm()">Creer une autre Chatroom</button>
+    }
+</div>
