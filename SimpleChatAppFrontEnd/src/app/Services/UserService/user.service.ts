@@ -12,14 +12,6 @@ export class UserService {
 
   constructor(private httpClient: HttpClient){}
 
-  private getStandardOptions():any{
-    return {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json'
-      })
-    };
-  }
-
   getLoggedUser() : Observable<UserModel>{
     return this.httpClient.get<UserModel>(properties.LoggedUserApi,{
       withCredentials: true
@@ -30,6 +22,20 @@ export class UserService {
     return this.httpClient.get<Page<UserModel>>(properties.getAllOtherUsersApi + '?page=' + page,{
       withCredentials: true
     });
+  }
+
+  getUsersNotInvited(chatroomId:number, page:number) : Observable<Page<UserModel>>{
+    return this.httpClient.get<Page<UserModel>>(
+      properties.ChatroomApi + chatroomId + '/users/non-invited?page=' + page,
+      {withCredentials: true}
+    );
+  }
+
+  getUsersInvited(chatroomId:number, page:number) : Observable<Page<UserModel>>{
+    return this.httpClient.get<Page<UserModel>>(
+      properties.ChatroomApi + chatroomId + '/users/invited?page=' + page,
+      {withCredentials: true}
+    );
   }
 
   onLoggout() : Observable<any> {

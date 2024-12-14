@@ -1,4 +1,4 @@
-@if(otherUsers$ | async; as page){            
+@if(getUsers$ | async; as page){            
     <div class="accordion" id="userAccordion">
         <div class="accordion-item">
             <h2 class="accordion-header">
@@ -29,7 +29,7 @@
             </div>
         </div>
     </div>
-    @if(usersInvited.length === 0 && checkboxChanged){
+    @if(usersList.length === 0 && checkboxChanged && operation === 1){
         <div class="alert alert-danger">
             Vous devez inviter au moins un utilisateur
         </div>

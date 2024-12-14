@@ -1,25 +1,17 @@
 import { UserModel } from "./UserModel";
 
-interface Chatroom {
+export interface ChatroomModel {
     id: number;
     titre: string;
     description: string;
+    isActif: boolean;
 }
 
-export class ChatroomModel implements Chatroom {
-    constructor(
-        public id: number,
-        public titre: string,
-        public description: string
-    ){}
+export interface ChatroomWithOwnerAndStatusModel extends ChatroomModel {
+    owner: UserModel;
 }
 
-export class ChatroomWithOwnerAndStatusModel implements Chatroom {
-    constructor(
-        public id: number,
-        public titre: string,
-        public description: string,
-        public owner: UserModel,
-        public isActif: boolean
-    ){}
+export interface ModifyChatroomModel extends ChatroomModel {
+    startDate: string;
+    duration: number;
 }

@@ -40,7 +40,8 @@
         </div>
         <div class="mb-3">
             <label for="other-users" class="form-label">Invitez les utilisateurs :</label>
-            <InviteUsers id="other-users" (usersInvitedChanged)="updateUsersList($event)"></InviteUsers>
+            <InviteUsers id="other-users" (usersInvitedChanged)="updateUsersList($event)"
+                         [operation]="operation"></InviteUsers>
         </div>
         <div class="mb-3">
             <label for="dateStart" class="form-label">Choisir l'horaire/Depart :</label>

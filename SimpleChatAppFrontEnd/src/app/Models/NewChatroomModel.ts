@@ -7,3 +7,7 @@ export interface NewChatroomModel {
     duration: number;
     usersInvited: UserModel[];
 }
+
+export interface ModifiedChatroomModel extends NewChatroomModel {
+    usersRemoved: UserModel[];
+}

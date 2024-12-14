@@ -1,10 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Page } from '../../Models/PageableModel';
-import { ChatroomModel, ChatroomWithOwnerAndStatusModel } from '../../Models/ChatroomModel';
+import { ChatroomModel, ChatroomWithOwnerAndStatusModel, ModifyChatroomModel } from '../../Models/ChatroomModel';
 import properties from '../../properties.json';
 import { Observable, switchMap } from 'rxjs';
-import { NewChatroomModel } from '../../Models/NewChatroomModel';
+import { ModifiedChatroomModel, NewChatroomModel } from '../../Models/NewChatroomModel';
 
 export type ChatroomInfo = ChatroomModel | ChatroomWithOwnerAndStatusModel;
 
@@ -22,8 +22,8 @@ export class ChatroomService {
     );
   }
 
-  addChatroom(chatroom: NewChatroomModel): Observable<ChatroomModel>{
-    return this.httpClient.post<ChatroomModel>(
+  addChatroom(chatroom: NewChatroomModel): Observable<boolean>{
+    return this.httpClient.post<boolean>(
       properties.ChatroomApi,
       chatroom,
       {withCredentials: true}
@@ -43,5 +43,19 @@ export class ChatroomService {
       {withCredentials: true}
     );
   }
-  
+
+  getChatroomForModify(chatroomId: number): Observable<ModifyChatroomModel>{
+    return this.httpClient.get<ModifyChatroomModel>(
+      properties.ChatroomApi + chatroomId,
+      {withCredentials: true}
+    );
+  }
+
+  modifyChatroom(chatroomId: number, modifiedChatroom: ModifiedChatroomModel): Observable<boolean>{
+    return this.httpClient.put<boolean>(
+      properties.ChatroomApi + chatroomId,
+      modifiedChatroom,
+      {withCredentials: true}
+    )
+  }
 }

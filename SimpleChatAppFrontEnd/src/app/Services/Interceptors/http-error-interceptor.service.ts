@@ -20,30 +20,41 @@ export class HttpErrorInterceptorService implements HttpInterceptor{
                 }
                 else if(req.url.includes(properties.ChatroomApi) && req.method === 'POST' && error.status === 409){
                     errorMessage = 'Error: Chatroom already exists';
-                    return throwError(() => {
-                        alert(errorMessage);
-                        this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
-                            this.router.navigate([routerLinkList[1].path]);
-                        });
-                    });
+                    return throwError(() => this.handleError(errorMessage, 1));
                 }
                 else if(req.url.includes(properties.ChatroomApi) && req.method === 'DELETE' && (error.status === 404 || error.status === 409)){
                     errorMessage = "Erreur lors de l'operation de la Chatroom";
-                    return throwError(() => {
-                        alert(errorMessage);
-                        this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
-                            this.router.navigate([routerLinkList[2].path]);
-                        });
-                    });
+                    return throwError(() => this.handleError(errorMessage, 2));
+                }
+                else if(req.url.includes(properties.ChatroomApi) && req.method === 'PUT' && error.status === 409){
+                    errorMessage = "Erreur lors de l'operation de la Chatroom";
+                    let chatroomId = parseInt(req.url.split(properties.ChatroomApi)[1]);
+                    return throwError(() => this.handleError(errorMessage, 4, chatroomId));
+                }
+                else if(req.url.includes(properties.ChatroomApi) && (req.method === 'GET' || req.method === 'PUT') && error.status === 403){
+                    errorMessage = "Error: vous n'avez pas l'autorisation d'acceder a cette ressource";
+                    return throwError(() => this.handleError(errorMessage, 0));
                 }
                 else /* if(error.status === 0) */{
                     errorMessage = 'Error: Cannot connect to the server';
                 }
-                return throwError(() => {
-                    alert(errorMessage);
-                    window.location.href = properties.LoginApi;
-                });
+                return throwError(() => this.handleError(errorMessage, -1));
             })
         );
+    }
+
+    handleError(errorMsg: string, pathId: number, chatroomId?: number){
+        alert(errorMsg);
+        if(pathId === -1){
+            window.location.href = properties.LoginApi;
+        }else if(chatroomId){
+            this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
+                this.router.navigate([routerLinkList[pathId].path + chatroomId]);
+            });
+        }else{
+            this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
+                this.router.navigate([routerLinkList[pathId].path]);
+            });
+        }
     }
 }

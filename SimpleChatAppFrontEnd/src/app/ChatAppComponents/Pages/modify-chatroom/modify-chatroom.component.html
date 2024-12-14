@@ -1,1 +1,100 @@
-<p>modify-chatroom works! Chatroom id is {{chatroomId}}</p>
+@if(getModifyChatroom$ | async){
+    <div class="modifyPage">
+        <h1>Modifier votre chatroom :</h1>
+        <form [formGroup]="modifyChatroomForm" class="modifyChatroomForm" (ngSubmit)="onSubmit()" #formDir="ngForm">
+            <div [hidden]="formDir.submitted">
+                <div class="mb-3">
+                    <label for="titre" class="form-label str">Titre de la chatroom :</label>
+                    <input class="form-control" type="text" id="titre" formControlName="titre"
+                        placeholder="Entrer le titre du Chatroom">
+                    @if(titre?.invalid && (titre?.dirty || titre?.touched)){
+                        <div class="alert alert-danger">
+                            @if(titre?.hasError('required')){
+                                Titre est requis
+                            }
+                            @if(titre?.hasError('maxlength')){
+                                Titre doit contenir au plus 20 caracteres
+                            }
+                            @if(titre?.hasError('specialChars')){
+                                Titre ne doit pas contenir de caracteres speciaux
+                            }
+                            </div>
+                    }
+                </div>
+                <div class="mb-3">
+                    <label for="description" class="form-label">Description de la chatroom :</label>
+                    <textarea class="form-control" id="description" formControlName="description"
+                            placeholder="Entrer la description du Chatroom"></textarea>
+                    @if(description?.invalid && (description?.dirty || description?.touched)){
+                        <div class="alert alert-danger">
+                            @if(description?.hasError('required')){
+                                Description est requise
+                            }
+                            @if(description?.hasError('maxlength')){
+                                Description doit contenir au plus 100 caracteres
+                            }
+                            @if(description?.hasError('specialChars')){
+                                Description ne doit pas contenir de caracteres speciaux
+                            }
+                            </div>
+                    }
+                </div>
+                <div class="mb-3">
+                    <label for="invite-users" class="form-label">Invitez les utilisateurs :</label>
+                    <InviteUsers id="invite-users" (usersInvitedChanged)="updateNotInvitedUsersList($event)"
+                                [operation]="operationInvite" [chatroomId]="chatroomId"></InviteUsers>
+                </div>
+                <div class="mb-3">
+                    <label for="remove-users" class="form-label">Supprimer les utilisateurs :</label>
+                    <InviteUsers id="remove-users" (usersInvitedChanged)="updateInvitedUsersList($event)"
+                                [operation]="operationRemove" [chatroomId]="chatroomId"></InviteUsers>
+                </div>
+                <div class="mb-3">
+                    <label for="startDate" class="form-label">Choisir l'horaire/Depart :</label>
+                    <input class="form-control" type="datetime-local" id="startDate" 
+                           formControlName="startDate" [min]="getDateISOStr()">
+                    @if(startDate?.invalid && (startDate?.dirty || startDate?.touched)){
+                        <div class="alert alert-danger">
+                            @if(startDate?.hasError('required')){
+                                Date debut est requise
+                            }
+                            @if(startDate?.hasError('invalidDateFormat')){
+                                Format de date invalide
+                            }
+                        </div>
+                    }
+                    <div class="mb-3">
+                        <label for="duration" class="form-label">Duree de la chatroom (en jour) :</label>
+                        <input class="form-control" type="number" id="duration" formControlName="duration">
+                        <div class="text text-muted">Entre 1 -30 jours</div>
+                        @if(duration?.invalid && (duration?.dirty || duration?.touched)){
+                            <div class="alert alert-danger">
+                                @if(duration?.hasError('required')){
+                                    Duree est requise
+                                }
+                                @if(duration?.hasError('min')){
+                                    Duree doit etre au moins 1
+                                }
+                                @if(duration?.hasError('max')){
+                                    Duree doit etre au plus 30
+                                }
+                            </div>
+                        }
+                    </div>
+                    <button class="btn btn-primary" type="submit" [disabled]="modifyChatroomForm.invalid">Modifier votre Chatroom</button>
+                </div>
+            </div>
+        </form>
+        @if(formDir.submitted){
+            @if(modifyResult$ | async){
+                <div class="alert alert-success">
+                    Chatroom modifie avec succes
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-primary" (click)="resetForm(routerLinkList[4].path, chatroomId)">Re-modifier Chatroom</button>
+                    <button class="btn btn-primary" (click)="resetForm(routerLinkList[0].path)">Retourner a l'accueil</button>
+                </div>
+            }
+        }
+    </div>
+}

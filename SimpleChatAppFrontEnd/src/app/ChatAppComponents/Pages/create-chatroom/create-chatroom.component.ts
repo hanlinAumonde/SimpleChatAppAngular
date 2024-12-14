@@ -2,12 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { UserModel } from '../../../Models/UserModel';
-import { InviteUsersComponent } from "./invite-users/invite-users.component";
+import { InviteUsersComponent } from "../../../CommonComponents/invite-users/invite-users.component";
 import { NewChatroomModel } from '../../../Models/NewChatroomModel';
 import { ValidatorsService } from '../../../Services/ValidatorService/validators.service';
 import { Router } from '@angular/router';
 import { ChatroomService } from '../../../Services/ChatroomService/chatroom.service';
 import routerLinkList from '../../../routerLinkList.json';
+import { operationType } from '../../../CommonComponents/invite-users/invite-users.component';
 
 @Component({
   selector: 'CreateChatroom',
@@ -22,6 +23,7 @@ export class CreateChatroomComponent implements OnInit{
   createChatroomForm!: FormGroup;
 
   routerLinkList!: any[];
+  operation!: operationType;
 
   constructor(private formBuilder: FormBuilder, 
               private validatorService: ValidatorsService, 
@@ -30,6 +32,7 @@ export class CreateChatroomComponent implements OnInit{
 
   ngOnInit(): void {
     this.routerLinkList = routerLinkList;
+    this.operation = operationType.CREATE_CHATROOM;
     this.createChatroomForm = this.formBuilder.group({
       titre: ['', [Validators.required, Validators.maxLength(20), this.validatorService.specialCharValidator()]],
       description: ['', [Validators.required, Validators.maxLength(100), this.validatorService.specialCharValidator()]],
@@ -75,7 +78,6 @@ export class CreateChatroomComponent implements OnInit{
     this.usersInvited.forEach(user => {
       this.usersInvitedList.push(this.formBuilder.control(user));      
     });
-    console.log(this.usersInvitedList.value);
   }
 
   onSubmit(): void {
@@ -86,7 +88,6 @@ export class CreateChatroomComponent implements OnInit{
       duration: this.createChatroomForm.value.duration,
       usersInvited: this.createChatroomForm.value.users_invited
     };
-    console.log(newChatroom);
     this.chatroomService.addChatroom(newChatroom).subscribe();
   }
 }

@@ -50,11 +50,11 @@
                                         </li>
                                     }
                                     <li><hr class="dropdown-divider"></li>
-                                        <li>
-                                            <a class="dropdown-item" href="#"
-                                            [routerLink]="routerLinkList[5].path + room.id">
-                                                Entrer
-                                            </a>
+                                    <li>
+                                        <a class="dropdown-item" [class.disabled]="!room.isActif" href="#"
+                                           [routerLink]="routerLinkList[5].path + room.id">
+                                            Entrer
+                                        </a>
                                     </li>
                                 </ul>
                             </div>
