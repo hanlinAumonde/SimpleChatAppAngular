@@ -34,10 +34,13 @@
             <div class="accordion-body">
                 <ul class="list-group list-group-flush nav">
                     @for(routerLink of routerLinkList; track routerLink.id){
+                        @if(routerLink.id <= 3){
                         <li class="list-group-item nav-item">
                             <a class="nav-link fs-5" [routerLink]="routerLink.path" (click)="onClickLink()">
                                 <strong>{{routerLink.titre}}</strong>
                             </a>
+                        </li>
+                        }
                     }
                 </ul>
             </div>

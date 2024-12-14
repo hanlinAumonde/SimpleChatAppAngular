@@ -49,7 +49,7 @@
             @if(dateStart?.invalid && (dateStart?.dirty || dateStart?.touched)){
                 <div class="alert alert-danger">
                     @if(dateStart?.hasError('required')){
-                        Description est requise
+                        Date debut est requise
                     }
                     @if(dateStart?.hasError('invalidDateFormat')){
                         Format de date invalide
@@ -82,6 +82,9 @@
         <div class="alert alert-success">
             Chatroom cree avec succes
         </div>
-        <button class="btn btn-primary" (click)="resetForm()">Creer une autre Chatroom</button>
+        <div class="btn-group">
+            <button class="btn btn-primary" (click)="resetForm(routerLinkList[1].path)">Creer une autre Chatroom</button>
+            <button class="btn btn-primary" (click)="resetForm(routerLinkList[0].path)">Retourner a l'accueil</button>
+        </div>
     }
 </div>

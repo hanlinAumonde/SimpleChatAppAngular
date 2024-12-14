@@ -1,15 +1,13 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
-import { UserService } from '../../../Services/UserService/user.service';
-import { Observable } from 'rxjs';
 import { UserModel } from '../../../Models/UserModel';
 import { InviteUsersComponent } from "./invite-users/invite-users.component";
 import { NewChatroomModel } from '../../../Models/NewChatroomModel';
 import { ValidatorsService } from '../../../Services/ValidatorService/validators.service';
 import { Router } from '@angular/router';
-import { ChatroomModel } from '../../../Models/ChatroomModel';
 import { ChatroomService } from '../../../Services/ChatroomService/chatroom.service';
+import routerLinkList from '../../../routerLinkList.json';
 
 @Component({
   selector: 'CreateChatroom',
@@ -23,12 +21,15 @@ export class CreateChatroomComponent implements OnInit{
 
   createChatroomForm!: FormGroup;
 
+  routerLinkList!: any[];
+
   constructor(private formBuilder: FormBuilder, 
               private validatorService: ValidatorsService, 
               private chatroomService: ChatroomService,
               private router: Router) {}
 
   ngOnInit(): void {
+    this.routerLinkList = routerLinkList;
     this.createChatroomForm = this.formBuilder.group({
       titre: ['', [Validators.required, Validators.maxLength(20), this.validatorService.specialCharValidator()]],
       description: ['', [Validators.required, Validators.maxLength(100), this.validatorService.specialCharValidator()]],
@@ -62,9 +63,9 @@ export class CreateChatroomComponent implements OnInit{
     return new Date().toISOString().slice(0,16)
   }
 
-  resetForm(): void {
+  resetForm(path:string): void {
     this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
-      this.router.navigate(['/planifier-a-chatroom']);
+      this.router.navigate([path]);
     });
   }
 

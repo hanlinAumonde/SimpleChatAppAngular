@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-chatroom',
@@ -7,5 +8,9 @@ import { Component } from '@angular/core';
   styleUrl: './chatroom.component.css'
 })
 export class ChatroomComponent {
+  chatroomId!: string | null;
 
+  constructor(private route: ActivatedRoute) {
+    this.chatroomId = this.route.snapshot.paramMap.get('id');
+  }
 }

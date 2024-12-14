@@ -6,14 +6,15 @@ import { JoinedChatroomsListComponent } from './ChatAppComponents/Pages/joined-c
 import { OwnedChatroomsListComponent } from './ChatAppComponents/Pages/owned-chatrooms-list/owned-chatrooms-list.component';
 import { ModifyChatroomComponent } from './ChatAppComponents/Pages/modify-chatroom/modify-chatroom.component';
 import { PageNotFoundComponent } from './ChatAppComponents/Pages/page-not-found/page-not-found.component';
+import routerLinkList from './routerLinkList.json'
 
 export const routes: Routes = [
-    {'path': 'acceuilPage', component: AcceuilComponent},
-    {'path': 'planifier-a-chatroom', component: CreateChatroomComponent},
-    {'path': 'chatroomlist-joined', component: JoinedChatroomsListComponent},
-    {'path': 'chatroomlist-owned', component: OwnedChatroomsListComponent},
-    {'path': 'modify-chatroom/:id', component: ModifyChatroomComponent},
-    {'path': 'chatroom/:id', component: ChatroomComponent},
-    {'path': '', redirectTo: '/acceuilPage', pathMatch: 'full'},
+    {'path': routerLinkList[0].pathRouter, component: AcceuilComponent},
+    {'path': routerLinkList[1].pathRouter, component: CreateChatroomComponent},
+    {'path': routerLinkList[3].pathRouter, component: JoinedChatroomsListComponent},
+    {'path': routerLinkList[2].pathRouter, component: OwnedChatroomsListComponent},
+    {'path': routerLinkList[4].pathRouter, component: ModifyChatroomComponent},
+    {'path': routerLinkList[5].pathRouter, component: ChatroomComponent},
+    {'path': '', redirectTo: routerLinkList[0].pathRouter, pathMatch: 'full'},
     {'path': '**', component: PageNotFoundComponent}
 ];

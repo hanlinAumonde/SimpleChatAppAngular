@@ -1,1 +1,11 @@
-<p>owned-chatrooms-list works!</p>
+<div class="ownedroomsList">
+    <h1>Liste des chatrooms créés :</h1>
+    @if(userInfo$ | async; as loggedUser){
+        <ChatroomList class="chatroomList"
+                    [isJoinedRoomsPage]="false"
+                    [isOwnedRoomsPage]="true"
+                    [isOwner]="true"
+                    [userId]="loggedUser.id"
+        ></ChatroomList>
+    }
+</div>

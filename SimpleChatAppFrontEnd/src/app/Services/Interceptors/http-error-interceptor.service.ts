@@ -2,6 +2,7 @@ import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest
 import { Injectable } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
 import properties from '../../properties.json';
+import routerLinkList from '../../routerLinkList.json';
 import { Router } from '@angular/router';
 
 @Injectable({
@@ -22,7 +23,16 @@ export class HttpErrorInterceptorService implements HttpInterceptor{
                     return throwError(() => {
                         alert(errorMessage);
                         this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
-                            this.router.navigate(['/planifier-a-chatroom']);
+                            this.router.navigate([routerLinkList[1].path]);
+                        });
+                    });
+                }
+                else if(req.url.includes(properties.ChatroomApi) && req.method === 'DELETE' && (error.status === 404 || error.status === 409)){
+                    errorMessage = "Erreur lors de l'operation de la Chatroom";
+                    return throwError(() => {
+                        alert(errorMessage);
+                        this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
+                            this.router.navigate([routerLinkList[2].path]);
                         });
                     });
                 }

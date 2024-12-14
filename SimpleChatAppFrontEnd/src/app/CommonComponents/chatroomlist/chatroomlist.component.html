@@ -6,6 +6,8 @@
                     <th>Chatroom Id</th>
                     <th>Titre</th>
                     <th>Description du Chatroom</th>
+                    <th [hidden]="!isJoinedRoomsPage">Owner du Chatroom</th>
+                    <th [hidden]="!isOwnedRoomsPage && !isJoinedRoomsPage">Operation</th>
                 </tr>
             </thead>
             <tbody>
@@ -14,6 +16,49 @@
                         <td>{{room.id}}</td>
                         <td>{{room.titre}}</td>
                         <td>{{room.description}}</td>
+                        <td [hidden]="!isJoinedRoomsPage">
+                            @if(isChatroomWithOwnerAndStatusModel(room)){
+                                {{room.owner.firstName}} {{room.owner.lastName}}
+                            }
+                        </td>
+                        <td [hidden]="!isOwnedRoomsPage && !isJoinedRoomsPage">
+                            <div class="btn-group dropend">
+                                <button type="button" class="btn btn-primary dropdown-toggle"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                    Manager      
+                                </button>
+                                <ul class="dropdown-menu">
+                                    @if(isOwnedRoomsPage){
+                                        <li>
+                                            <a class="dropdown-item" href="#" 
+                                            [routerLink]="routerLinkList[4].path + room.id">
+                                                Modifier
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="#"
+                                               (click)="onDeleteChatroom($event, room.id, page.number>0? page.number-1:0)">
+                                                Supprimer
+                                            </a>
+                                        </li>
+                                    }@else if(isJoinedRoomsPage){
+                                        <li>
+                                            <a class="dropdown-item" href="#"
+                                               (click)="onLeaveChatroom($event, room.id, page.number>0? page.number-1:0)">
+                                                Quitter
+                                            </a>
+                                        </li>
+                                    }
+                                    <li><hr class="dropdown-divider"></li>
+                                        <li>
+                                            <a class="dropdown-item" href="#"
+                                            [routerLink]="routerLinkList[5].path + room.id">
+                                                Entrer
+                                            </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </td>
                     </tr>
                 }
             </tbody>

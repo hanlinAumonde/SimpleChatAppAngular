@@ -1,1 +1,11 @@
-<p>joined-chatrooms-list works!</p>
+<div class="joinedroomsList">
+    <h1>Liste des chatrooms rejoints :</h1>
+    @if(userInfo$ | async; as loggedUser){
+        <ChatroomList class="chatroomList"
+                    [isJoinedRoomsPage]="true"
+                    [isOwnedRoomsPage]="false"
+                    [isOwner]="false"
+                    [userId]="loggedUser.id"
+        ></ChatroomList>
+    }
+</div>

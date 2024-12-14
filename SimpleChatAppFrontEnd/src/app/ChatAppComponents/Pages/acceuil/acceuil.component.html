@@ -5,28 +5,36 @@
             <h2>Voici votre Chatrooms :</h2>
                 <div>
                     Vous pouvez voir vos Chatrooms dans 
-                    <a [routerLink]="routerLinkList[2].path">Chatrooms Owned</a> 
+                    <a [routerLink]="routerLinkList[2].path">Chatrooms Créés</a> 
                     et faire les operations.
                 </div>
                 <div>
                     S'il ya des chatrooms que vous avez planifié n'ont pas etre affiché, 
                     c'est possible que ils ont deja expiré.
                 </div>
-                <ChatroomList [userId]="loggedUser.id" [isOwner]="true"></ChatroomList>
+                <ChatroomList [userId]="loggedUser.id" 
+                              [isOwner]="true"
+                              [isOwnedRoomsPage]="false"
+                              [isJoinedRoomsPage]="false"              
+                ></ChatroomList>
         </section>
         <br/>
         <section class="section">
             <h2>Voici les Chatrooms que vous avez rejoint :</h2>
                 <div>
                     Vous pouvez voir les Chatrooms que vous avez rejoint dans 
-                    <a [routerLink]="routerLinkList[3].path">Chatrooms joined</a> 
+                    <a [routerLink]="routerLinkList[3].path">Chatrooms rejoints</a> 
                     et faire les operations.
                 </div>
                 <div>
                     S'il ya des chatrooms que vous avez rejoint n'ont pas etre affiché, 
                     c'est possible que ils ont deja expiré.
                 </div>
-                <ChatroomList [userId]="loggedUser.id" [isOwner]="false"></ChatroomList>
+                <ChatroomList [userId]="loggedUser.id" 
+                              [isOwner]="false"
+                              [isOwnedRoomsPage]="false"
+                              [isJoinedRoomsPage]="false"
+                ></ChatroomList>
         </section>
     </div>
 }
