@@ -4,3 +4,7 @@ export interface UserModel {
     lastName: string;
     mail: string;
 }
+
+export interface UserInChatroomModel extends UserModel {
+    isConnecting:0|1;
+}

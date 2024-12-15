@@ -1,0 +1,24 @@
+@for(msg of messages; track msg.index){
+    @if(msg.messageType === 0){
+        <div [class]="cssClassForMessage(msg.sender)">
+            <div [class]="cssClassForCard(msg.sender)">
+                <div class="card-header">
+                    <span>{{msg.user.username}}</span>
+                    <span [style]="spanStyle"></span>
+                    <span>{{msg.timestamp}}</span>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">{{getTransformedMsg(msg.message)}}</p>
+                </div>
+            </div>
+        </div>
+    }@else{
+        <div [class]="cssClassForAlert(msg.messageType)">
+            {{
+                msg.messageType === 1? 
+                    'User ' + msg.user.username + ' has joined the chatroom':
+                    'User ' + msg.user.username + ' has left the chatroom'
+            }}
+        </div>
+    }
+}

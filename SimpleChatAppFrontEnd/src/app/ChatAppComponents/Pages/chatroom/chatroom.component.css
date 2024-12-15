@@ -1,0 +1,64 @@
+:host {
+    height: 100%;
+    width: 100%;
+    display: block;
+    /* overflow: auto; */
+}
+
+.container {
+    height: 100%;
+    display: block;
+}
+
+.h2 {
+    height: 10%;
+    flex-shrink: 0;
+}
+
+.titre {
+    display: flex;
+    justify-content: space-between;
+}
+
+.container-fluid {
+    height: 90%;
+    display: block;
+    /* overflow: auto; */
+}
+
+.row {
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+.col1 {
+    flex: 6;
+    height: 100%;
+    display: flex;
+    flex-direction: column-reverse;
+}
+.col2 {
+    flex: 2;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.scrollboxes {
+    flex: 8;
+    overflow-y: auto;
+    scroll-behavior: smooth;
+    margin-bottom: 4%;
+    display: flex;
+    flex-direction: column;
+}
+.userslist {
+    flex: 1;
+    height: 100%;
+    overflow-y: auto;
+    scroll-behavior: smooth;
+    margin-bottom: 8%;
+}
+.form {
+    flex: 1;
+}

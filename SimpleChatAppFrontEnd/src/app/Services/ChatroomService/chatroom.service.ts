@@ -5,6 +5,7 @@ import { ChatroomModel, ChatroomWithOwnerAndStatusModel, ModifyChatroomModel } f
 import properties from '../../properties.json';
 import { Observable, switchMap } from 'rxjs';
 import { ModifiedChatroomModel, NewChatroomModel } from '../../Models/NewChatroomModel';
+import { UserModel } from '../../Models/UserModel';
 
 export type ChatroomInfo = ChatroomModel | ChatroomWithOwnerAndStatusModel;
 
@@ -57,5 +58,12 @@ export class ChatroomService {
       modifiedChatroom,
       {withCredentials: true}
     )
+  }
+
+  getAllUsersInChatroom(chatroomId: number): Observable<UserModel[]>{
+    return this.httpClient.get<UserModel[]>(
+      properties.ChatroomApi + chatroomId + '/users',
+      {withCredentials: true}
+    );
   }
 }

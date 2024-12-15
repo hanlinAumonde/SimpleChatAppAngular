@@ -1,0 +1,24 @@
+<div class="list-group">
+    <span class="badge text-bg-primary">
+        Users Online:
+    </span>
+    @for(user of usersOnline;track user.id){
+        <div class="list-group-item">
+            <p>{{user.firstName + ' ' + user.lastName}}</p>
+            <p>{{user.mail}}</p>
+        </div>
+    }
+    @if(!ifExsitUsersOnline()){
+        <div class="list-group-item">No Users Online</div>
+    }
+    <span class="badge text-bg-primary">
+        Users Offline:
+    </span>
+    @for(user of usersOffline; track user.id){
+        <div class="list-group-item">
+            <p>{{user.firstName + ' ' + user.lastName}}</p>
+            <p>{{user.mail}}</p>
+        </div>
+    }
+</div>
+    
