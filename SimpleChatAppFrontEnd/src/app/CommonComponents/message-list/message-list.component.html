@@ -1,3 +1,26 @@
+@if(historyMessages$ | async; as histMsgs){
+    @for(histMsg of histMsgs; track histMsg.index){
+        @if(histMsg.messageType === 'dateSign'){
+            <span class="badge text-bg-light">
+                {{histMsg.timestamp}}
+            </span>
+        }@else if(histMsg.messageType === 'content'){
+            <div [class]="cssClassForMessage(histMsg.sentByUser)">
+                <div [class]="cssClassForCard(histMsg.sentByUser)">
+                    <div class="card-header">
+                        <span>{{histMsg.username}}</span>
+                        <span [style]="spanStyle"></span>
+                        <span>{{histMsg.timestamp}}</span>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">{{getTransformedMsg(histMsg.message)}}</p>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+}
+<br/>
 @for(msg of messages; track msg.index){
     @if(msg.messageType === 0){
         <div [class]="cssClassForMessage(msg.sender)">

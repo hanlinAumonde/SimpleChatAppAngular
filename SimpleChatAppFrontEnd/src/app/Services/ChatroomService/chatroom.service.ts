@@ -6,6 +6,7 @@ import properties from '../../properties.json';
 import { Observable, switchMap } from 'rxjs';
 import { ModifiedChatroomModel, NewChatroomModel } from '../../Models/NewChatroomModel';
 import { UserModel } from '../../Models/UserModel';
+import { HistoryMessage } from '../../Models/ChatMessage';
 
 export type ChatroomInfo = ChatroomModel | ChatroomWithOwnerAndStatusModel;
 
@@ -65,5 +66,12 @@ export class ChatroomService {
       properties.ChatroomApi + chatroomId + '/users',
       {withCredentials: true}
     );
+  }
+
+  getHistoryMessages(chatroomId: number): Observable<HistoryMessage[]>{
+    return this.httpClient.get<HistoryMessage[]>(
+      properties.ChatroomApi + chatroomId + '/history-messages',
+      {withCredentials: true}
+    )
   }
 }

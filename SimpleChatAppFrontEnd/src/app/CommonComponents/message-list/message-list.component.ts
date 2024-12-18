@@ -1,20 +1,32 @@
-import { Component, Input } from '@angular/core';
-import { ChatMessage } from '../../Models/ChatMessage';
+import { Component, Input, OnInit } from '@angular/core';
+import { ChatMessage, HistoryMessage } from '../../Models/ChatMessage';
+import { ChatroomService } from '../../Services/ChatroomService/chatroom.service';
+import { map, Observable } from 'rxjs';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'MessageList',
-  imports: [],
+  imports: [AsyncPipe],
   templateUrl: './message-list.component.html',
   styleUrl: './message-list.component.css'
 })
-export class MessageListComponent {
+export class MessageListComponent implements OnInit{
+  @Input() chatroomId!: string | null;
   @Input() messages!: ChatMessage[];
 
-  cssClassForMessage(sender: 0|1): string {
-    return sender === 1? 'sender': 'receiver';
+  historyMessages$!: Observable<HistoryMessage[]>;
+    
+  constructor(private chatroomService: ChatroomService) {}
+
+  ngOnInit(): void {
+    this.historyMessages$ = this.chatroomService.getHistoryMessages(parseInt(this.chatroomId!));
   }
-  cssClassForCard(sender: 0|1): string {
-    return 'card ' + (sender === 1? 'text-bg-primary': 'text-bg-light');
+
+  cssClassForMessage(sender: boolean): string {
+    return sender? 'sender': 'receiver';
+  }
+  cssClassForCard(sender: boolean): string {
+    return 'card ' + (sender? 'text-bg-primary': 'text-bg-light');
   }
   cssClassForAlert(messageType: 0|1|2|3): string {
     return 'alert ' + (messageType === 1? 'alert-info': 'alert-dark');

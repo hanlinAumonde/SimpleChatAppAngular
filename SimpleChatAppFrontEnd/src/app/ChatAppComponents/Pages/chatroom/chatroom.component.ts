@@ -6,7 +6,6 @@ import { SharedUserInfoService } from '../../../Services/shared/User/shared-user
 import { WebSocketService } from '../../../Services/WebSocketService/web-socket.service';
 import { ChatroomService } from '../../../Services/ChatroomService/chatroom.service';
 import { ChatMessage } from '../../../Models/ChatMessage';
-import properties from '../../../properties.json';
 import routerLinkList from '../../../routerLinkList.json';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ValidatorsService } from '../../../Services/ValidatorService/validators.service';
@@ -92,9 +91,9 @@ export class ChatroomComponent implements OnInit, OnDestroy{
         this.usersList$.next(updatedUsersList);
         
         if(msg.user.id === currentUser.id){
-          return {...msg, sender: 1};
+          return {...msg, sender: true};
         }else{
-          return {...msg, sender: 0};
+          return {...msg, sender: false};
         }
       }),
       scan((acc, msg) => [...acc, {...msg, index: acc.length} as ChatMessage], [] as ChatMessage[])

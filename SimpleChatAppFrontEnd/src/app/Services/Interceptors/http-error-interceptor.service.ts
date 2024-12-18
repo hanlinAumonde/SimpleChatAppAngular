@@ -44,14 +44,16 @@ export class HttpErrorInterceptorService implements HttpInterceptor{
     }
 
     handleError(errorMsg: string, pathId: number, chatroomId?: number){
-        alert(errorMsg);
         if(pathId === -1){
+            console.log(errorMsg);
             window.location.href = properties.LoginApi;
         }else if(chatroomId){
+            alert(errorMsg);
             this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
                 this.router.navigate([routerLinkList[pathId].path + chatroomId]);
             });
         }else{
+            alert(errorMsg);
             this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
                 this.router.navigate([routerLinkList[pathId].path]);
             });

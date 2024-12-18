@@ -1,6 +1,6 @@
 export interface ChatMessage extends InitialMessage {
     index: number;
-    sender: 0 | 1;
+    sender: boolean;
 }
 
 export interface InitialMessage {
@@ -11,4 +11,13 @@ export interface InitialMessage {
     messageType: 0 | 1 | 2 | 3;
     message: string;
     timestamp: string;
+}
+
+export interface HistoryMessage {
+    index: number;
+    username: string;
+    message: string;
+    timestamp: string;
+    sentByUser: boolean;
+    messageType: "content" | "dateSign";
 }
