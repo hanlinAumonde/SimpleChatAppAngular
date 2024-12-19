@@ -10,6 +10,12 @@ import { HistoryMessage } from '../../Models/ChatMessage';
 
 export type ChatroomInfo = ChatroomModel | ChatroomWithOwnerAndStatusModel;
 
+export enum ScrollBehavior {
+  None,
+  ScrollToBottom,
+  Preserve
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -73,5 +79,12 @@ export class ChatroomService {
       properties.ChatroomApi + chatroomId + '/history-messages',
       {withCredentials: true}
     )
+  }
+
+  getHistoryMessagesByPage(chatroomId: number, page: number): Observable<HistoryMessage[]>{
+    return this.httpClient.get<HistoryMessage[]>(
+      properties.ChatroomApi + chatroomId + '/history-messages/' + page,
+      {withCredentials: true}
+    );
   }
 }

@@ -22,7 +22,7 @@ export class HttpErrorInterceptorService implements HttpInterceptor{
                     errorMessage = 'Error: Chatroom already exists';
                     return throwError(() => this.handleError(errorMessage, 1));
                 }
-                else if(req.url.includes(properties.ChatroomApi) && req.method === 'DELETE' && (error.status === 404 || error.status === 409)){
+                else if(req.url.includes(properties.ChatroomApi) && req.method === 'DELETE' && (error.status === 404 || error.status === 409 || error.status === 500)){
                     errorMessage = "Erreur lors de l'operation de la Chatroom";
                     return throwError(() => this.handleError(errorMessage, 2));
                 }
@@ -47,16 +47,17 @@ export class HttpErrorInterceptorService implements HttpInterceptor{
         if(pathId === -1){
             console.log(errorMsg);
             window.location.href = properties.LoginApi;
-        }else if(chatroomId){
-            alert(errorMsg);
-            this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
-                this.router.navigate([routerLinkList[pathId].path + chatroomId]);
-            });
         }else{
             alert(errorMsg);
-            this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
-                this.router.navigate([routerLinkList[pathId].path]);
-            });
+            if(chatroomId){
+                this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
+                    this.router.navigate([routerLinkList[pathId].path + chatroomId]);
+                });
+            }else{
+                this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
+                    this.router.navigate([routerLinkList[pathId].path]);
+                });
+            }
         }
     }
 }

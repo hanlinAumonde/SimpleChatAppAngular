@@ -19,5 +19,5 @@ export interface HistoryMessage {
     message: string;
     timestamp: string;
     sentByUser: boolean;
-    messageType: "content" | "dateSign";
+    messageType: "content" | "dateSign" | "latestDateSign";
 }

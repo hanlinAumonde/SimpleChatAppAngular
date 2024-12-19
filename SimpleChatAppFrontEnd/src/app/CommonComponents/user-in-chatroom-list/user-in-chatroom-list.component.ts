@@ -7,7 +7,7 @@ import { UserInChatroomModel } from '../../Models/UserModel';
   templateUrl: './user-in-chatroom-list.component.html',
   styleUrl: './user-in-chatroom-list.component.css'
 })
-export class UserInChatroomListComponent implements OnInit, OnChanges{
+export class UserInChatroomListComponent implements OnInit , OnChanges{
   @Input() users!: UserInChatroomModel[];
 
   usersOnline!: UserInChatroomModel[];

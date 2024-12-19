@@ -1,47 +1,52 @@
-@if(historyMessages$ | async; as histMsgs){
-    @for(histMsg of histMsgs; track histMsg.index){
-        @if(histMsg.messageType === 'dateSign'){
-            <span class="badge text-bg-light">
-                {{histMsg.timestamp}}
-            </span>
-        }@else if(histMsg.messageType === 'content'){
-            <div [class]="cssClassForMessage(histMsg.sentByUser)">
-                <div [class]="cssClassForCard(histMsg.sentByUser)">
-                    <div class="card-header">
-                        <span>{{histMsg.username}}</span>
-                        <span [style]="spanStyle"></span>
-                        <span>{{histMsg.timestamp}}</span>
-                    </div>
-                    <div class="card-body">
-                        <p class="card-text">{{getTransformedMsg(histMsg.message)}}</p>
+<div #messageContainer class="message-container">
+    @if(historyMessages$ |async; as historyMessages){
+        @if(haveMoreHistMsgs()){
+            <a class="histMsg-button" href="#" (click)="showMoreHistMsg($event)">afficher plus de messages</a>
+        }
+        @for(histMsg of historyMessages; track histMsg.index + '_' + histMsg.timestamp + '_' + histMsg.message){
+            @if(histMsg.messageType === 'dateSign'){
+                <span class="badge text-bg-light">
+                    {{histMsg.timestamp}}
+                </span>
+            }@else if(histMsg.messageType === 'content'){
+                <div [class]="cssClassForMessage(histMsg.sentByUser)">
+                    <div [class]="cssClassForCard(histMsg.sentByUser)">
+                        <div class="card-header">
+                            <span>{{histMsg.username}}</span>
+                            <span [style]="spanStyle"></span>
+                            <span>{{histMsg.timestamp}}</span>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">{{getTransformedMsg(histMsg.message)}}</p>
+                        </div>
                     </div>
                 </div>
+            }
+        }
+    }
+    <br/>
+    @for(msg of messages; track msg.index){
+        @if(msg.messageType === 0){
+            <div [class]="cssClassForMessage(msg.sender)">
+                <div [class]="cssClassForCard(msg.sender)">
+                    <div class="card-header">
+                        <span>{{msg.user.username}}</span>
+                        <span [style]="spanStyle"></span>
+                        <span>{{msg.timestamp}}</span>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">{{getTransformedMsg(msg.message)}}</p>
+                    </div>
+                </div>
+            </div>
+        }@else{
+            <div [class]="cssClassForAlert(msg.messageType)">
+                {{
+                    msg.messageType === 1? 
+                        'User ' + msg.user.username + ' has joined the chatroom':
+                        'User ' + msg.user.username + ' has left the chatroom'
+                }}
             </div>
         }
     }
-}
-<br/>
-@for(msg of messages; track msg.index){
-    @if(msg.messageType === 0){
-        <div [class]="cssClassForMessage(msg.sender)">
-            <div [class]="cssClassForCard(msg.sender)">
-                <div class="card-header">
-                    <span>{{msg.user.username}}</span>
-                    <span [style]="spanStyle"></span>
-                    <span>{{msg.timestamp}}</span>
-                </div>
-                <div class="card-body">
-                    <p class="card-text">{{getTransformedMsg(msg.message)}}</p>
-                </div>
-            </div>
-        </div>
-    }@else{
-        <div [class]="cssClassForAlert(msg.messageType)">
-            {{
-                msg.messageType === 1? 
-                    'User ' + msg.user.username + ' has joined the chatroom':
-                    'User ' + msg.user.username + ' has left the chatroom'
-            }}
-        </div>
-    }
-}
+</div>
