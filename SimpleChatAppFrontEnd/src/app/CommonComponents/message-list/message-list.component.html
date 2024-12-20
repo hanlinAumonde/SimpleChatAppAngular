@@ -12,7 +12,7 @@
                 <div [class]="cssClassForMessage(histMsg.sentByUser)">
                     <div [class]="cssClassForCard(histMsg.sentByUser)">
                         <div class="card-header">
-                            <span>{{histMsg.username}}</span>
+                            <span><strong>{{isDeletedUser(histMsg)? "user supprimé": histMsg.username}}</strong></span>
                             <span [style]="spanStyle"></span>
                             <span>{{histMsg.timestamp}}</span>
                         </div>
@@ -40,13 +40,16 @@
                 </div>
             </div>
         }@else{
-            <div [class]="cssClassForAlert(msg.messageType)">
-                {{
-                    msg.messageType === 1? 
-                        'User ' + msg.user.username + ' has joined the chatroom':
-                        'User ' + msg.user.username + ' has left the chatroom'
-                }}
-            </div>
+            @if(msg.messageType === 1){
+                <div [class]="cssClassForAlert(msg.messageType)">
+                    {{'User ' + msg.user.username + ' has joined the chat'}}
+                </div>
+            }@else if(msg.messageType === 2){
+                <div [class]="cssClassForAlert(msg.messageType)">
+                    {{'User ' + msg.user.username + ' has left the chat'}}
+                </div>
+            }
+            
         }
     }
 </div>

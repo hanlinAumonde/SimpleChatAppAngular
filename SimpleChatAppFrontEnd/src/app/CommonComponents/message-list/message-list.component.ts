@@ -1,8 +1,9 @@
 import { Component, Input, OnInit, ViewChild, ElementRef, AfterViewChecked, WritableSignal, signal, OnChanges, SimpleChanges } from '@angular/core';
-import { ChatMessage, HistoryMessage } from '../../Models/ChatMessage';
+import { ChatMessage, HistoryMessage, HistoryMessageType, InitialMessageType } from '../../Models/ChatMessage';
 import { ChatroomService, ScrollBehavior } from '../../Services/ChatroomService/chatroom.service';
-import { BehaviorSubject, map, Observable, withLatestFrom } from 'rxjs';
+import { BehaviorSubject, map, withLatestFrom } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
+import { UserInChatroomModel } from '../../Models/UserModel';
 
 @Component({
   selector: 'MessageList',
@@ -13,6 +14,7 @@ import { AsyncPipe } from '@angular/common';
 export class MessageListComponent implements OnInit, AfterViewChecked, OnChanges {
   @Input() chatroomId!: string | null;
   @Input() messages!: ChatMessage[];
+  @Input() users!: UserInChatroomModel[];
 
   @ViewChild('messageContainer') private messageContainer!: ElementRef;
 
@@ -21,8 +23,6 @@ export class MessageListComponent implements OnInit, AfterViewChecked, OnChanges
   haveMoreHistMsgs : WritableSignal<boolean> = signal(true);
 
   scrollBehavior!: ScrollBehavior;
-  lastScrollDiff = 0;
-  private firstVisibleMessageInfo: {index: number, timestamp: string, message: string} | null = null;
     
   constructor(private chatroomService: ChatroomService) {}
 
@@ -32,6 +32,8 @@ export class MessageListComponent implements OnInit, AfterViewChecked, OnChanges
       (historyMessages: HistoryMessage[]) => {
         if(historyMessages.length === 0) this.haveMoreHistMsgs.update(_ => false);
         this.historyMessages$.next(historyMessages);
+        
+        setTimeout(() => this.scrollToBottom('auto'), 100);
       }
     );
   }
@@ -46,7 +48,6 @@ export class MessageListComponent implements OnInit, AfterViewChecked, OnChanges
     event.preventDefault();
     this.scrollBehavior = ScrollBehavior.Preserve;
     
-    // 记住当前第一条内容消息（第二项）的信息
     const currentFirstMessage = this.historyMessages$.value[0];
     
     this.histMsgPage.update(page => page + 1);
@@ -62,13 +63,12 @@ export class MessageListComponent implements OnInit, AfterViewChecked, OnChanges
             (msg, idx) => ({
               ...msg,
               index: idx + newHistMsg.length,
-              messageType: msg.messageType === "dateSign" && msg.timestamp === latestNewMsg.timestamp? 
-                                "latestDateSign" : msg.messageType
+              messageType: msg.messageType === HistoryMessageType.DATE_SIGN && msg.timestamp === latestNewMsg.timestamp? 
+                                HistoryMessageType.LATEST_DATE_SIGN : msg.messageType
             }
           ))) as HistoryMessage[];
           this.historyMessages$.next(combinedMessages);
 
-          // 在更新后找到之前的第一条消息并滚动到它的位置
           if (currentFirstMessage) {
             requestAnimationFrame(() => {
               const targetIndex = currentFirstMessage.timestamp === latestNewMsg.timestamp? newHistMsg.length : newHistMsg.length; // 新消息数量 + 1（跳过日期标签）
@@ -85,20 +85,24 @@ export class MessageListComponent implements OnInit, AfterViewChecked, OnChanges
 
   ngAfterViewChecked() {
     if (this.scrollBehavior === ScrollBehavior.ScrollToBottom) {
-      this.scrollToBottom();
+      this.scrollToBottom("smooth");
     }
     this.scrollBehavior = ScrollBehavior.None;
   }
 
-  private scrollToBottom(): void {
+  scrollToBottom(behavior:string): void {
     try {
       this.messageContainer.nativeElement.scrollTo({
         top: this.messageContainer.nativeElement.scrollHeight,
-        behavior: 'smooth'
+        behavior: behavior
       });
     } catch(err) {
       console.log('Error scrolling to bottom:', err);
     }
+  }
+
+  isDeletedUser(msg: HistoryMessage): boolean{
+    return !this.users.some(user => user.id === msg.userId);
   }
 
   cssClassForMessage(sender: boolean): string {
@@ -107,7 +111,7 @@ export class MessageListComponent implements OnInit, AfterViewChecked, OnChanges
   cssClassForCard(sender: boolean): string {
     return 'card ' + (sender? 'text-bg-primary': 'text-bg-light');
   }
-  cssClassForAlert(messageType: 0|1|2|3): string {
+  cssClassForAlert(messageType: InitialMessageType): string {
     return 'alert ' + (messageType === 1? 'alert-info': 'alert-dark');
   }
   

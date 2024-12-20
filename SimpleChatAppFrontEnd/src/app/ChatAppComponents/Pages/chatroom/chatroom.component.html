@@ -12,34 +12,35 @@
         <div class="container-fluid">
             <div class="row">
                 @if(messages$ | async; as messages){
-                    <div class="col1">
-                        <form [formGroup]="sendMsgForm" (ngSubmit)="sendMsg()" class="form">
-                            <div class="input-group">
-                                <input type="text" class="form-control" formControlName="message" placeholder="Type a message...">
-                                <button class="btn btn-primary" type="submit"
-                                        [disabled]="sendMsgForm.invalid">Send</button>
-                            </div> 
-                            @if(message?.invalid && (message?.dirty || message?.touched)){
-                                <div class="text text-danger"> 
-                                    @if(message?.hasError('required')){
-                                        Message is required
-                                    }
-                                    @if(message?.hasError('specialChars')){
-                                        Message cannot contain special characters
-                                    }
-                                </div>
-                            }@else{
-                                <br/>
-                            }
-                        </form>
-                        <MessageList class="scrollboxes" [messages]="messages" [chatroomId]="chatroomId"></MessageList>
-                    </div>
+                    @if(usersList$ | async; as users){
+                        <div class="col1">
+                            <form [formGroup]="sendMsgForm" (ngSubmit)="sendMsg()" class="form">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" formControlName="message" placeholder="Type a message...">
+                                    <button class="btn btn-primary" type="submit"
+                                            [disabled]="sendMsgForm.invalid">Send</button>
+                                </div> 
+                                @if(message?.invalid && (message?.dirty || message?.touched)){
+                                    <div class="text text-danger"> 
+                                        @if(message?.hasError('required')){
+                                            Message is required
+                                        }
+                                        @if(message?.hasError('specialChars')){
+                                            Message cannot contain special characters
+                                        }
+                                    </div>
+                                }@else{
+                                    <br/>
+                                }
+                            </form>
+                            <MessageList class="scrollboxes" [messages]="messages" [chatroomId]="chatroomId" [users]="users"></MessageList>
+                        </div>
+                        <div class="col2">
+                            <UserInChatroomList class="userslist" [users]="users"></UserInChatroomList>
+                        </div>
+                    }
                 }
-                @if(usersList$ | async; as users){
-                    <div class="col2">
-                        <UserInChatroomList class="userslist" [users]="users"></UserInChatroomList>
-                    </div>
-                }
+                
             </div>
         </div>
         

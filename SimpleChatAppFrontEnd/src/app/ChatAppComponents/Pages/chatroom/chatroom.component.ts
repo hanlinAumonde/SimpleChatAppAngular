@@ -1,17 +1,18 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { UserInChatroomModel, UserModel } from '../../../Models/UserModel';
+import { UserInChatroomModel } from '../../../Models/UserModel';
 import { BehaviorSubject, combineLatest, map, Observable, scan, take, withLatestFrom } from 'rxjs';
 import { SharedUserInfoService } from '../../../Services/shared/User/shared-user-info.service';
 import { WebSocketService } from '../../../Services/WebSocketService/web-socket.service';
 import { ChatroomService } from '../../../Services/ChatroomService/chatroom.service';
-import { ChatMessage } from '../../../Models/ChatMessage';
+import { ChatMessage, InitialMessage, InitialMessageType } from '../../../Models/ChatMessage';
 import routerLinkList from '../../../routerLinkList.json';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ValidatorsService } from '../../../Services/ValidatorService/validators.service';
 import { AsyncPipe } from '@angular/common';
 import { MessageListComponent } from '../../../CommonComponents/message-list/message-list.component';
 import { UserInChatroomListComponent } from '../../../CommonComponents/user-in-chatroom-list/user-in-chatroom-list.component';
+
 
 @Component({
   selector: 'app-chatroom',
@@ -28,6 +29,9 @@ export class ChatroomComponent implements OnInit, OnDestroy{
   messages$! : Observable<ChatMessage[]>;
 
   sendMsgForm!: FormGroup;
+
+  /* timerGetAllUsers! : any;
+  usersUpdateByVote!: UserModel[]; */
 
   constructor(private route: ActivatedRoute,
               private webSocketService: WebSocketService,
@@ -66,27 +70,49 @@ export class ChatroomComponent implements OnInit, OnDestroy{
       map(([msg, usersList, currentUser]) => {
         let updatedUsersList = [...usersList];
         
-        if(msg.messageType === 1){
-          updatedUsersList = updatedUsersList.map(user => {
-            if(user.id === msg.user.id){
-              return {...user, isConnecting: 1};
+        switch(msg.messageType){
+
+          case InitialMessageType.CONNECT:
+            updatedUsersList = updatedUsersList.map(user => {
+              if(user.id === msg.user.id){
+                return {...user, isConnecting: 1};
+              }
+              return user;
+            });
+            break;
+
+          case InitialMessageType.DISCONNECT:
+            updatedUsersList = updatedUsersList.map(user => {
+              if(user.id === msg.user.id){
+                return {...user, isConnecting: 0};
+              }
+              return user;
+            });
+            break;
+
+          case InitialMessageType.REMOVE_CHATROOM:
+            this.redirectToAccueilPage(msg.message);
+            break;
+
+          case InitialMessageType.ADD_MEMBER:
+            updatedUsersList.push({
+              id: msg.user.id,
+              firstName: msg.user.username.split(' ')[0],
+              lastName: msg.user.username.split(' ')[1],
+              isConnecting: 0
+            } as UserInChatroomModel);
+            break;
+
+          case InitialMessageType.REMOVE_MEMBER:
+            if(msg.user.id === currentUser.id){
+              this.redirectToAccueilPage("Vous avez été retiré de cette Chatroom !");
             }
-            return user;
-          });
+            updatedUsersList = updatedUsersList.filter(user => user.id !== msg.user.id);
+            break;
         }
-        else if(msg.messageType === 2){
-          updatedUsersList = updatedUsersList.map(user => {
-            if(user.id === msg.user.id){
-              return {...user, isConnecting: 0};
-            }
-            return user;
-          });
-        }
-        else if(msg.messageType === 3){
-          alert("Attention ! " + msg.message);
-          this.webSocketService.closeWebSocket();
-          this.router.navigate([routerLinkList[0].path]);
-        }
+        updatedUsersList.sort((firstUser, secondUser) => 
+          firstUser.firstName + " " + firstUser.lastName > secondUser.firstName + " " + secondUser.lastName? 1 : -1
+        )
         
         this.usersList$.next(updatedUsersList);
         
@@ -99,12 +125,29 @@ export class ChatroomComponent implements OnInit, OnDestroy{
       scan((acc, msg) => [...acc, {...msg, index: acc.length} as ChatMessage], [] as ChatMessage[])
     );
 
+    /* const callback = () => {
+      this.chatroomService.getAllUsersInChatroom(parseInt(this.chatroomId!)).subscribe(
+        (newUsers: UserModel[]) => {
+          if(this.usersUpdateByVote && this.usersUpdateByVote.length === newUsers.length) return;
+          this.usersUpdateByVote = [...newUsers];
+        }
+      );
+    }
+    callback();
+    this.timerGetAllUsers = setInterval(callback, 20 * 1000); */
+
     this.sendMsgForm = new FormGroup({
       message: new FormControl('',[Validators.required, this.validateService.specialCharValidator()])
     });
   }
 
   get message() { return this.sendMsgForm.get('message'); }
+
+  redirectToAccueilPage(msg: string){
+    alert("Attention ! " + msg);
+    this.webSocketService.closeWebSocket();
+    this.router.navigate([routerLinkList[0].path]);
+  }
 
   sendMsg(){
     if(this.webSocketService.webSocketClientState !== WebSocket.OPEN){
@@ -119,7 +162,6 @@ export class ChatroomComponent implements OnInit, OnDestroy{
   }
 
   onClickCloseChatroom(){
-    //this.webSocketService.closeWebSocket();
     this.router.navigate([routerLinkList[0].path]);
   }
 

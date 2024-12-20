@@ -4,8 +4,7 @@
     </span>
     @for(user of usersOnline;track user.id){
         <div class="list-group-item">
-            <p>{{user.firstName + ' ' + user.lastName}}</p>
-            <p>{{user.mail}}</p>
+            <p>{{user.lastName + ' ' + user.firstName}}</p>
         </div>
     }
     @if(!ifExsitUsersOnline()){
@@ -16,8 +15,7 @@
     </span>
     @for(user of usersOffline; track user.id){
         <div class="list-group-item">
-            <p>{{user.firstName + ' ' + user.lastName}}</p>
-            <p>{{user.mail}}</p>
+            <p>{{user.lastName + ' ' + user.firstName}}</p>
         </div>
     }
 </div>
